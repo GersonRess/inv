@@ -1,0 +1,13 @@
+{% extends 'base_crud_dynamic.html' %}
+
+{% block title %}Lista de {{ model_name_plural }}{% endblock %}
+
+{% block content %}
+    <h1>Lista de {{ model_name }}</h1>
+    <ul>
+        {% for instance in object_list %}
+            <li><a href="{% url model_name|lower|add:'_detail' instance.pk %}">{{ instance }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url model_name|lower|add:'_create' %}">Crear Nuevo {{ model_name }}</a>
+{% endblock %}

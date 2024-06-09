@@ -1,0 +1,12 @@
+{% extends 'base_crud_dynamic.html' %}
+
+{% block title %}{% if action == 'create' %}Crear {% else %}Editar {% endif %} {{ model_name }}{% endblock %}
+
+{% block content %}
+    <h1>{% if action == 'create' %}Crear {% else %}Editar {% endif %} {{ model_name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
+{% endblock %}

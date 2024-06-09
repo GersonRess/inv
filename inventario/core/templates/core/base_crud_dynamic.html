@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* The side navigation menu */
+        .sidebar {
+            margin: 0;
+            padding: 0;
+            width: 200px;
+            background-color: #000000e7;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+            color: white;
+            border-radius: 10px;
+        }
+
+        /* Sidebar links */
+        .sidebar a {
+            display: block;
+            color: black;
+            padding: 16px;
+            text-decoration: none;
+            color: white;
+        }
+
+        /* Active/current link */
+        .sidebar a.active {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* Links on mouse-over */
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+        div.content {
+            margin-left: 230px;
+            
+            padding: 1px 16px;
+            height: 1000px;
+        }
+        main{
+            margin-top: 50px;
+        }
+        /* On screens that are less than 700px wide, make the sidebar into a topbar */
+        @media screen and (max-width: 700px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar a {
+                float: left;
+            }
+
+            div.content {
+                margin-left: 0;
+            }
+        }
+
+        /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+        @media screen and (max-width: 400px) {
+            .sidebar a {
+                text-align: center;
+                float: none;
+            }
+        }
+    </style>
+    
+</head>
+
+<body>
+    <div class="sidebar">
+        <li><a href="{% url 'tipoprod_list' %}">Tipos de Producto</a></li>
+        <li><a href="{% url 'tipopago_list' %}">Tipos de Pago</a></li>
+        <li><a href="{% url 'proveedor_list' %}">Proveedores</a></li>
+        <li><a href="{% url 'ubicacion_list' %}">Ubicaciones</a></li>
+        <li><a href="{% url 'producto_list' %}">Productos</a></li>
+    </div>
+    <div class="content">
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+</body>
+
+
+</html>

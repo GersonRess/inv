@@ -1,0 +1,16 @@
+{% extends 'base_crud_dynamic.html' %}
+
+{% block title %}Detalle de {{ model_name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if object %}
+            <h1>Detalle de {{ model_name }}</h1>
+            <p>{{ object }}</p>
+            <a href="{% url model_name|lower|add:'_update' object.pk %}" class="btn btn-primary">Editar</a>
+            <a href="{% url model_name|lower|add:'_delete' object.pk %}" class="btn btn-danger">Eliminar</a>
+        {% else %}
+            <p>El objeto no existe o ha sido eliminado.</p>
+        {% endif %}
+    </div>
+{% endblock %}
