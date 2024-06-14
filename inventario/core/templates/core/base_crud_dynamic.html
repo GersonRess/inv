@@ -1,11 +1,15 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
+    <!--CSS-->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+   <!-- <style>
         /* The side navigation menu */
         .sidebar {
             margin: 0;
@@ -74,24 +78,42 @@
                 float: none;
             }
         }
-    </style>
+    </style>  -->
     
 </head>
 
 <body>
-    <div class="sidebar">
-        <li><a href="{% url 'tipoprod_list' %}">Tipos de Producto</a></li>
-        <li><a href="{% url 'tipopago_list' %}">Tipos de Pago</a></li>
-        <li><a href="{% url 'proveedor_list' %}">Proveedores</a></li>
-        <li><a href="{% url 'ubicacion_list' %}">Ubicaciones</a></li>
-        <li><a href="{% url 'producto_list' %}">Productos</a></li>
+    <div class="container-fluid">
+
+        <div class="row d-flex">
+
+           <div class="col-sm-3 col-md-2 col-lg-2 " id="aside">
+                
+                
+
+                <li><a href="{% url 'tipoprod_list' %}">Tipos de Producto</a></li>
+                <li><a href="{% url 'tipopago_list' %}">Tipos de Pago</a></li>
+                <li><a href="{% url 'proveedor_list' %}">Proveedores</a></li>
+                <li><a href="{% url 'ubicacion_list' %}">Ubicaciones</a></li>
+                <li><a href="{% url 'producto_list' %}">Productos</a></li>
+
+            </div>
+           
+
+            <div class="content col-sm-8 col-md-9 col-lg-7" id="producto">
+                <main>
+
+                    {% block content %}
+
+                    {% endblock %}
+
+                </main>
+            </div>
+
+        </div>
+        
     </div>
-    <div class="content">
-        <main>
-            {% block content %}
-            {% endblock %}
-        </main>
-    </div>
+    
 </body>
 
 

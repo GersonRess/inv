@@ -1,12 +1,50 @@
-{% extends 'base_crud_dynamic.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Producto</title>
+</head>
+<body>
+    
+    {% extends 'base_crud_dynamic.html' %}
+    <div class="container-fluid" >
 
-{% block title %}{% if action == 'create' %}Crear {% else %}Editar {% endif %} {{ model_name }}{% endblock %}
+        <div class="row">
 
-{% block content %}
-    <h1>{% if action == 'create' %}Crear {% else %}Editar {% endif %} {{ model_name }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Guardar</button>
-    </form>
-{% endblock %}
+            <div class="col-lg-3" id="producto">
+                {% block title %}{% if action == 'create' %}Crear {% else %}Editar {% endif %} {{ model_name }}{% endblock %}
+            </div>
+
+            <div class="col-lg-9">
+
+                {% block content %}
+
+                    <h1>{% if action == 'create' %}Crear {% else %}Editar {% endif %} {{ model_name }}</h1>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success">Guardar</button>
+                    </form>
+                {% endblock %}
+
+            </div>
+        </div>
+
+        
+    </div>
+
+
+    
+
+
+
+
+    
+</body>
+</html>
+
+
+
+
