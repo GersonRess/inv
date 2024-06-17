@@ -3,7 +3,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q, CharField
-from .models import TipoProd, TipoPago, Proveedor, Ubicacion, Producto
+from .models import TipoProd, TipoPago, Proveedor, Ubicacion, Producto, Kit
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 
@@ -122,5 +122,5 @@ TipoProdViews = generate_views(TipoProd, fields=['tipoProd'])
 TipoPagoViews = generate_views(TipoPago, fields=['tipoPago'])
 ProveedorViews = generate_views(Proveedor, fields=['nombreProveedor', 'numeroTel', 'correo', 'tipoPago'])
 UbicacionViews = generate_views(Ubicacion, fields=['ubicacion'])
-ProductoViews = generate_views(Producto, fields=['tipoProducto', 'nombreProducto', 'valorUnitario', 'proveedor', 'numeroSerie', 'ubicacion', 'etiquetas', 'categoria'])
-
+ProductoViews = generate_views(Producto, fields=['tipoProducto', 'nombreProducto', 'valorUnitario', 'proveedor', 'numeroSerie', 'ubicacion', 'etiquetas', 'categoria', 'descripcion', 'stock'])
+KitViews = generate_views(Kit, fields=['productos', 'precio', 'nombre', 'descripcion'])

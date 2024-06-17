@@ -28,6 +28,10 @@
                 <th scope="col">Etiquetas</th>
                 <th scope="col">Categoría</th>
                 {% endif %}
+                {% if model_name == 'Kit' %}
+                <th scope="col">Productos</th>
+                <th scope="col">Precio</th>
+                {% endif %}
                 <th scope="col">Acciones</th>
             </tr>
         </thead>
@@ -39,6 +43,16 @@
                 {% if model_name == 'Producto' %}
                 <td>{{ instance.etiquetas }}</td>
                 <td>{{ instance.categoria }}</td>
+                {% endif %}
+                {% if model_name == 'Kit' %}
+                <td>
+                    <ul>
+                        {% for producto in instance.productos.all %}
+                        <li>{{ producto.nombreProducto }}</li> 
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ instance.precio }}</td>
                 {% endif %}
                 <td>
                     <a href="{% url model_name|lower|add:'_update' instance.pk %}"

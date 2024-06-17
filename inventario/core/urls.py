@@ -2,7 +2,7 @@
 
 from django.urls import path, reverse_lazy
 from django.contrib.auth.decorators import login_required
-from .views import CustomLoginView, CustomLogoutView, TipoProdViews, TipoPagoViews, ProveedorViews, UbicacionViews, ProductoViews
+from .views import CustomLoginView, CustomLogoutView, TipoProdViews, TipoPagoViews, ProveedorViews, UbicacionViews, ProductoViews, KitViews
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LogoutView
 urlpatterns = [
@@ -41,4 +41,10 @@ urlpatterns = [
     path('producto/<int:pk>/edit/', login_required(ProductoViews['ProductoUpdateView'].as_view()), name='producto_update'),
     path('producto/<int:pk>/delete/', login_required(ProductoViews['ProductoDeleteView'].as_view()), name='producto_delete'),
     
+    path('kit/', login_required(KitViews['KitListView'].as_view()), name='kit_list'),
+    path('kit/<int:pk>/', login_required(KitViews['KitDetailView'].as_view()), name='kit_detail'),
+    path('kit/new/', login_required(KitViews['KitCreateView'].as_view()), name='kit_create'),
+    path('kit/<int:pk>/edit/', login_required(KitViews['KitUpdateView'].as_view()), name='kit_update'),
+    path('kit/<int:pk>/delete/', login_required(KitViews['KitDeleteView'].as_view()), name='kit_delete'),
+
 ]

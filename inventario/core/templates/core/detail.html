@@ -6,7 +6,11 @@
     <div class="container">
         {% if object %}
             <h1>Detalle de {{ model_name }}</h1>
-            <p>{{ object }}</p>
+            <h2>{{ object }}</h2>
+            {% if model_name == 'Producto' %}
+            <p><strong>Descripción:</strong> {{ object.descripcion }}</p>
+            <p><strong>Stock:</strong> {{ object.stock }}</p>
+            {% endif %}
             <a href="{% url model_name|lower|add:'_update' object.pk %}" class="btn btn-primary">Editar</a>
             <a href="{% url model_name|lower|add:'_delete' object.pk %}" class="btn btn-danger">Eliminar</a>
         {% else %}

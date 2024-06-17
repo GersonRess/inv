@@ -46,10 +46,13 @@ class Producto(models.Model):
     numeroSerie = models.IntegerField(default=000000)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.CASCADE, default=0)
     etiquetas = models.CharField(max_length=100, default='Sin etiqueta')
-    categoria = models.CharField(max_length=50,  default='Sin categoría') 
+    categoria = models.CharField(max_length=50, default='Sin categoría') 
+    descripcion = models.TextField(default='Sin descripción')
+    stock = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nombreProducto
+
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -64,6 +67,18 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(username, password, **extra_fields)
+    
+class Kit(models.Model):
+    idKit = models.AutoField(primary_key=True)
+    productos = models.ManyToManyField(Producto, related_name='kits')
+    precio = models.IntegerField(default=0)
+    nombre = models.CharField(max_length=50)
+    descripcion = models.TextField()
+
+    def __str__(self):
+        return self.nombre
+
+
 
 class CustomUser(AbstractBaseUser):
     username = models.CharField(unique=True, max_length=150)

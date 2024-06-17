@@ -32,6 +32,7 @@
                 <li><a href="{% url 'proveedor_list' %}">Proveedores</a></li>
                 <li><a href="{% url 'ubicacion_list' %}">Ubicaciones</a></li>
                 <li><a href="{% url 'producto_list' %}">Productos</a></li>
+                <li><a href="{% url 'kit_list' %}">Kits</a></li>
                 <div class="bienvenida">
                     <li>Bienvenido, {{ user.username }}</li>
                     <form id="logout-form" action="{% url 'logout' %}" method="post">
