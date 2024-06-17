@@ -92,7 +92,8 @@ main{
 }
 
 #producto > main > form{
-    background-color: grey;
+    background-color: rgba(161, 161, 161, 0.426);
+    
 }
 
 #aside{
@@ -111,4 +112,24 @@ main{
 #aside li a{
     color: white;
 
+}
+
+#aside .bienvenida {
+    color: #fff;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.logo-container {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+}
+.logo-container img {
+    width: 150px; 
+    height: auto; 
+    max-width: 100%; 
 }

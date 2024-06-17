@@ -1,6 +1,8 @@
-# myapp/models.py
-
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    pass
 
 class TipoProd(models.Model):
     idTipoProd = models.AutoField(primary_key=True)
@@ -45,6 +47,8 @@ class Producto(models.Model):
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     numeroSerie = models.IntegerField(default=000000)
     ubicacion = models.ForeignKey(Ubicacion, on_delete=models.CASCADE, default=0)
+    etiquetas = models.CharField(max_length=100, default='Sin etiqueta')
+    categoria = models.CharField(max_length=50,  default='Sin categoría') 
 
     def __str__(self):
         return self.nombreProducto

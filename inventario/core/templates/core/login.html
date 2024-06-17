@@ -1,0 +1,36 @@
+<!-- templates/core/login.html -->
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Inicio de Sesión</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+  <div id="card">
+    <div id="card-content">
+      <div id="card-title">
+        <h2>Inicio de Sesión</h2>
+        <div class="underline-title"></div>
+      </div>
+      <form method="post" class="form">
+        {% csrf_token %}
+        <label for="id_username">Usuario:</label>
+        <input id="id_username" type="text" name="username" required autofocus autocomplete="username">
+        <br><br>
+        <label for="id_password">Contraseña:</label>
+        <input id="id_password" type="password" name="password" required autocomplete="current-password">
+        <input id="submit-btn" type="submit" name="submit" value="Iniciar Sesión" />
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

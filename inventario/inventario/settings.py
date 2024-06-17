@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-u(is@%go^bj=(82g9ep4zcij-v%3ujq+fj7e#_(=q3q0f)h=h7
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'core.CustomUser'
 
 # Application definition
 
@@ -115,7 +115,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
+LOGIN_REDIRECT_URL = 'tipoprod_list'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

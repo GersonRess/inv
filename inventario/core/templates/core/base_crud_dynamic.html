@@ -6,88 +6,24 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!--CSS-->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-
-   <!-- <style>
-        /* The side navigation menu */
-        .sidebar {
-            margin: 0;
-            padding: 0;
-            width: 200px;
-            background-color: #000000e7;
-            position: fixed;
-            height: 100%;
-            overflow: auto;
-            color: white;
-            border-radius: 10px;
-        }
-
-        /* Sidebar links */
-        .sidebar a {
-            display: block;
-            color: black;
-            padding: 16px;
-            text-decoration: none;
-            color: white;
-        }
-
-        /* Active/current link */
-        .sidebar a.active {
-            background-color: #04AA6D;
-            color: white;
-        }
-
-        /* Links on mouse-over */
-        .sidebar a:hover:not(.active) {
-            background-color: #555;
-            color: white;
-        }
-
-        /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
-        div.content {
-            margin-left: 230px;
-            
-            padding: 1px 16px;
-            height: 1000px;
-        }
-        main{
-            margin-top: 50px;
-        }
-        /* On screens that are less than 700px wide, make the sidebar into a topbar */
-        @media screen and (max-width: 700px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-
-            .sidebar a {
-                float: left;
-            }
-
-            div.content {
-                margin-left: 0;
-            }
-        }
-
-        /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
-        @media screen and (max-width: 400px) {
-            .sidebar a {
-                text-align: center;
-                float: none;
-            }
-        }
-    </style>  -->
-    
 </head>
 
 <body>
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
     <div class="container-fluid">
-
+        <div class="logo-container">
+            <img src="{% static 'images/logo.png' %}" alt="Logo de la empresa">
+        </div>
         <div class="row d-flex">
 
-           <div class="col-sm-3 col-md-2 col-lg-2 " id="aside">
+           <div class="col-sm-2 col-md-1 col-lg-2 " id="aside">
                 
                 
 
@@ -96,6 +32,15 @@
                 <li><a href="{% url 'proveedor_list' %}">Proveedores</a></li>
                 <li><a href="{% url 'ubicacion_list' %}">Ubicaciones</a></li>
                 <li><a href="{% url 'producto_list' %}">Productos</a></li>
+                <div class="bienvenida">
+                    <li>Bienvenido, {{ user.username }}</li>
+                    <form id="logout-form" action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar sesión</a>
+                    </form>
+                    
+                </div>
+                
 
             </div>
            
@@ -111,7 +56,7 @@
             </div>
 
         </div>
-        
+
     </div>
     
 </body>
