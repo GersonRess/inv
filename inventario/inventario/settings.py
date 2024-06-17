@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-u(is@%go^bj=(82g9ep4zcij-v%3ujq+fj7e#_(=q3q0f)h=h7
 DEBUG = True
 
 ALLOWED_HOSTS = []
-AUTH_USER_MODEL = 'core.CustomUser'
 
 # Application definition
 
@@ -37,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core'
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +76,7 @@ WSGI_APPLICATION = 'inventario.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'baseDatos',
+        'NAME': 'basedatos',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost',

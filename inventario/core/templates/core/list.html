@@ -3,55 +3,56 @@
 {% block title %}Lista de {{ model_name_plural }}{% endblock %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h1>Lista de {{ model_name_plural }}</h1>
+<div class="container mt-4">
+    <h1>Lista de {{ model_name_plural }}</h1>
 
-        <!-- Barra de búsqueda -->
-        <form method="GET" action="" class="form-inline mb-3">
-            <input type="text" name="q" class="form-control mr-2" placeholder="Buscar {{ model_name }}">
-            <button type="submit" class="btn btn-primary">Buscar</button>
-        </form>
+    <!-- Barra de búsqueda -->
+    <form method="GET" action="" class="form-inline mb-3">
+        <input type="text" name="q" class="form-control mr-2" placeholder="Buscar {{ model_name }}">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
 
-        <!-- Mostrar texto de búsqueda si se ha realizado una búsqueda -->
-        {% if request.GET.q %}
-            <p>Objetos que contienen "{{ request.GET.q }}"</p>
-        {% endif %}
+    <!-- Mostrar texto de búsqueda si se ha realizado una búsqueda -->
+    {% if request.GET.q %}
+    <p>Objetos que contienen "{{ request.GET.q }}"</p>
+    {% endif %}
 
-        <!-- Mostrar tabla solo si hay elementos -->
-        {% if object_list %}
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nombre</th>
-                        {% if model_name == 'Producto' %}
-                            <th scope="col">Etiquetas</th>
-                            <th scope="col">Categoría</th>
-                        {% endif %}
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for instance in object_list %}
-                        <tr>
-                            <td>{{ instance.pk }}</td>
-                            <td><a href="{% url model_name|lower|add:'_detail' instance.pk %}">{{ instance }}</a></td>
-                            {% if model_name == 'Producto' %}
-                                <td>{{ instance.etiquetas }}</td>
-                                <td>{{ instance.categoria }}</td>
-                            {% endif %}
-                            <td>
-                                <a href="{% url model_name|lower|add:'_update' instance.pk %}" class="btn btn-primary btn-sm">Editar</a>
-                                <a href="{% url model_name|lower|add:'_delete' instance.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>No hay {{ model_name }} disponibles.</p>
-        {% endif %}
-
-        <a href="{% url model_name|lower|add:'_create' %}" class="btn btn-success">Crear Nuevo {{ model_name }}</a>
-    </div>
+    <!-- Mostrar tabla solo si hay elementos -->
+    {% if object_list %}
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                {% if model_name == 'Producto' %}
+                <th scope="col">Etiquetas</th>
+                <th scope="col">Categoría</th>
+                {% endif %}
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for instance in object_list %}
+            <tr>
+                <td>{{ instance.pk }}</td>
+                <td><a href="{% url model_name|lower|add:'_detail' instance.pk %}">{{ instance }}</a></td>
+                {% if model_name == 'Producto' %}
+                <td>{{ instance.etiquetas }}</td>
+                <td>{{ instance.categoria }}</td>
+                {% endif %}
+                <td>
+                    <a href="{% url model_name|lower|add:'_update' instance.pk %}"
+                        class="btn btn-primary btn-sm">Editar</a>
+                    <a href="{% url model_name|lower|add:'_delete' instance.pk %}"
+                        class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No hay {{ model_name }} disponibles.</p>
+    {% endif %}
+    <a href="{% url model_name|lower|add:'_create' %}" class="btn btn-success">Crear Nuevo {{ model_name }}</a>
+</div>
 {% endblock %}

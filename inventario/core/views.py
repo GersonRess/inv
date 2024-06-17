@@ -2,7 +2,7 @@
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.db.models import Q
+from django.db.models import Q, CharField
 from .models import TipoProd, TipoPago, Proveedor, Ubicacion, Producto
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
@@ -27,36 +27,35 @@ def generate_views(model, fields=None):
             'model_name': class_name,
             'model_name_plural': class_name + 's',
         }
-
+        
         def get_queryset(self):
             query = self.request.GET.get('q')
             if query:
-                fields = [field.name for field in model._meta.fields]
+                # Obtén los campos del modelo actual
+                model_fields = model._meta.get_fields()
 
+                # Crea una lista de Q objects para realizar la búsqueda en campos relevantes
                 queries = []
-                for field in fields:
-                    if model._meta.get_field(field).get_internal_type() == 'CharField':
-                        lookup = f'{field}__icontains'
+                for field in model_fields:
+                    if isinstance(field, CharField):
+                        lookup = f'{field.name}__icontains'
                         queries.append(Q(**{lookup: query}))
-                    else:
-                        if model._meta.get_field(field).get_internal_type() == 'ForeignKey':
-                            lookup = f'{field}__id'
-                            queries.append(Q(**{lookup: query}))
+                    elif hasattr(field, 'field') and isinstance(field.field, CharField):  # Para campos ForeignKey
+                        lookup = f'{field.name}__{field.field.name}__icontains'
+                        queries.append(Q(**{lookup: query}))
 
-                print(f"Fields: {fields}")
-                print(f"Queries: {queries}")
+                # Aplica los filtros utilizando OR entre ellos
+                if queries:
+                    queryset = model.objects.filter(*queries)
+                else:
+                    queryset = model.objects.all()
 
-                queryset = model.objects.filter(*queries)
-
-                print(f"Queryset count: {queryset.count()}")
-                messages.info(self.request, f'Resultados filtrados para {class_name}.')
                 return queryset
             else:
                 return model.objects.all()
 
     # List View
     views[f'{class_name}ListView'] = ListViewWithSearch
-
     # Detail View
     views[f'{class_name}DetailView'] = type(
         f'{class_name}DetailView',
@@ -82,11 +81,9 @@ def generate_views(model, fields=None):
                 'model_name': class_name,
                 'action': 'create'
             },
-            'success_url': reverse_lazy(f'{class_name.lower()}_list'),
+            'success_url': reverse_lazy(f'{class_name.lower()}_list')
         }
-        
     )
-    
 
     # Update View
     views[f'{class_name}UpdateView'] = type(
@@ -125,4 +122,5 @@ TipoProdViews = generate_views(TipoProd, fields=['tipoProd'])
 TipoPagoViews = generate_views(TipoPago, fields=['tipoPago'])
 ProveedorViews = generate_views(Proveedor, fields=['nombreProveedor', 'numeroTel', 'correo', 'tipoPago'])
 UbicacionViews = generate_views(Ubicacion, fields=['ubicacion'])
-ProductoViews = generate_views(Producto, fields=['tipoProducto', 'nombreProducto', 'valorUnitario', 'proveedor', 'numeroSerie', 'ubicacion','etiquetas','categoria'])
+ProductoViews = generate_views(Producto, fields=['tipoProducto', 'nombreProducto', 'valorUnitario', 'proveedor', 'numeroSerie', 'ubicacion', 'etiquetas', 'categoria'])
+
