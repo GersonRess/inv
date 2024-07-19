@@ -1,7 +1,7 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+from django.utils import timezone
 
 class TipoProd(models.Model):
     idTipoProd = models.AutoField(primary_key=True)
@@ -90,3 +90,20 @@ class CustomUser(AbstractBaseUser):
 
     def __str__(self):
         return self.username
+    
+class HistoricoCompra(models.Model):
+    fecha_compra = models.DateTimeField(default=timezone.now)
+    total_compra = models.FloatField()
+
+    def __str__(self):
+        return f"Compra {self.id} - {self.fecha_compra}"
+class DetalleCompra(models.Model):
+    historico_compra = models.ForeignKey(HistoricoCompra, on_delete=models.CASCADE, related_name='detalles')
+    producto_id = models.IntegerField()
+    nombre_producto = models.CharField(max_length=255)
+    precio_unitario = models.FloatField()
+    cantidad = models.IntegerField()
+    total_producto = models.FloatField()
+
+    def __str__(self):
+        return f"{self.nombre_producto} - {self.cantidad} unidades"

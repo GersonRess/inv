@@ -2,7 +2,7 @@
 
 from django.urls import path, reverse_lazy
 from django.contrib.auth.decorators import login_required
-from .views import CartView, remove_from_cart, clear_cart, add_to_cart, buy_products, CustomLoginView, CustomLogoutView, TipoProdViews, TipoPagoViews, ProveedorViews, UbicacionViews, ProductoViews, KitViews
+from .views import HistoricoCompraListView, DetalleCompraDetailView, CartView, remove_from_cart, clear_cart, add_to_cart, buy_products, CustomLoginView, CustomLogoutView, TipoProdViews, TipoPagoViews, ProveedorViews, UbicacionViews, ProductoViews, KitViews
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LogoutView
 from . import views
@@ -53,4 +53,6 @@ urlpatterns = [
     path('comprar/', buy_products, name='buy_products'),
     path('remove_from_cart/<int:index>/', remove_from_cart, name='remove_from_cart'),
     path('clear_cart/', clear_cart, name='clear_cart'),
+    path('historico_compras/', HistoricoCompraListView.as_view(), name='historico_compra_list'),
+    path('historico_compra/<int:pk>/', DetalleCompraDetailView.as_view(), name='detalle_compra_detail'),
 ]

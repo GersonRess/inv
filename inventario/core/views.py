@@ -2,7 +2,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q, CharField
-from .models import TipoProd, TipoPago, Proveedor, Ubicacion, Producto, Kit
+from .models import HistoricoCompra, DetalleCompra, TipoProd, TipoPago, Proveedor, Ubicacion, Producto, Kit
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from django.shortcuts import render, redirect,  get_object_or_404, HttpResponseRedirect
@@ -78,8 +78,10 @@ def buy_products(request):
         cart = request.session.get('cart', [])
         quantities = {key: int(value) for key, value in request.POST.items() if key.startswith('quantity_')}
         
+        total_compra = 0
+        detalles = []
+
         for index, item in enumerate(cart):
-            # Verifica la clave 'id' en lugar de 'product_id'
             product_id = item.get('id')
             if not product_id:
                 messages.error(request, "Error al procesar el carrito.")
@@ -92,15 +94,42 @@ def buy_products(request):
                 product.stock -= quantity
                 product.save()
                 item['quantity'] = quantity
+                
+                # Calcular totales
+                total_producto = item['price'] * quantity
+                total_compra += total_producto
+                
+                # Crear detalle de compra
+                detalles.append({
+                    'producto_id': product_id,
+                    'nombre_producto': item['name'],
+                    'precio_unitario': item['price'],
+                    'cantidad': quantity,
+                    'total_producto': total_producto
+                })
             else:
                 messages.error(request, f"No hay suficiente stock para {product.nombreProducto}.")
+        
+        if detalles:
+            # Crear entrada en HistoricoCompra
+            compra = HistoricoCompra.objects.create(total_compra=total_compra)
+            
+            # Crear detalles de la compra
+            for detalle in detalles:
+                DetalleCompra.objects.create(
+                    historico_compra=compra,
+                    producto_id=detalle['producto_id'],
+                    nombre_producto=detalle['nombre_producto'],
+                    precio_unitario=detalle['precio_unitario'],
+                    cantidad=detalle['cantidad'],
+                    total_producto=detalle['total_producto']
+                )
         
         cart.clear()
         request.session['cart'] = cart
         messages.success(request, "Compra realizada con éxito.")
         
     return redirect('cart')
-
 class CustomLoginView(LoginView):
     template_name = 'core/login.html'  
     success_url = reverse_lazy('tipoprod_list')  # Redirige aquí después del login
@@ -226,7 +255,21 @@ def generate_views(model, fields=None):
     )
 
     return views
+class HistoricoCompraListView(ListView):
+    model = HistoricoCompra
+    template_name = 'core/historico_compra_list.html'
+    context_object_name = 'compras'
+    paginate_by = 10  # Opcional: número de compras por página
 
+class DetalleCompraDetailView(DetailView):
+    model = HistoricoCompra
+    template_name = 'core/detalle_compra_detail.html'
+    context_object_name = 'compra'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['detalles'] = DetalleCompra.objects.filter(historico_compra=self.object)
+        return context
 # Generar las vistas para cada modelo
 TipoProdViews = generate_views(TipoProd, fields=['tipoProd'])
 TipoPagoViews = generate_views(TipoPago, fields=['tipoPago'])
