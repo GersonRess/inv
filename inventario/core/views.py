@@ -1,10 +1,105 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy, reverse
 from django.db.models import Q, CharField
 from .models import TipoProd, TipoPago, Proveedor, Ubicacion, Producto, Kit
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
+from django.shortcuts import render, redirect,  get_object_or_404, HttpResponseRedirect
+from django.views import View
+cart = []
+
+from django.shortcuts import render
+from django.views.generic import TemplateView
+
+class CartView(TemplateView):
+    template_name = 'core/cart.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cart = self.request.session.get('cart', [])
+        
+        # Imprime el contenido del carrito para depuración
+        print("Contenido del carrito (get_context_data):", cart)
+        
+        # Asegúrate de que 'price' y 'quantity' sean números válidos
+        total = sum(
+            float(item.get('price', 0)) * int(item.get('quantity', 0)) 
+            for item in cart
+        )
+        
+        context['cart'] = cart
+        context['total'] = total
+        return context
+
+
+
+def add_to_cart(request, pk):
+    product = get_object_or_404(Producto, pk=pk)
+    print(f"Producto: {product.pk}, Nombre: {product.nombreProducto}, Precio: {product.valorUnitario}")  # Depuración
+    
+    cart = request.session.get('cart', [])
+    product_found = False
+
+    for item in cart:
+        if item.get('id') == product.pk:
+            item['quantity'] += 1
+            product_found = True
+            break
+
+    if not product_found:
+        cart.append({
+            'id': product.pk,  # Asegúrate de que la clave sea 'id'
+            'name': product.nombreProducto,
+            'price': float(product.valorUnitario) if product.valorUnitario is not None else 0.0,
+            'quantity': 1,
+            'stock': product.stock
+        })
+    
+    request.session['cart'] = cart
+    return redirect('cart')
+
+
+def remove_from_cart(request, index):
+    cart = request.session.get('cart', [])
+    
+    if 0 <= index < len(cart):
+        cart.pop(index)
+    
+    request.session['cart'] = cart
+    return redirect('cart')
+
+def clear_cart(request):
+    request.session['cart'] = []
+    return redirect('cart')
+
+def buy_products(request):
+    if request.method == 'POST':
+        cart = request.session.get('cart', [])
+        quantities = {key: int(value) for key, value in request.POST.items() if key.startswith('quantity_')}
+        
+        for index, item in enumerate(cart):
+            # Verifica la clave 'id' en lugar de 'product_id'
+            product_id = item.get('id')
+            if not product_id:
+                messages.error(request, "Error al procesar el carrito.")
+                return redirect('cart')
+
+            product = get_object_or_404(Producto, pk=product_id)
+            quantity = quantities.get(f'quantity_{index}', item['quantity'])
+            
+            if product.stock >= quantity:
+                product.stock -= quantity
+                product.save()
+                item['quantity'] = quantity
+            else:
+                messages.error(request, f"No hay suficiente stock para {product.nombreProducto}.")
+        
+        cart.clear()
+        request.session['cart'] = cart
+        messages.success(request, "Compra realizada con éxito.")
+        
+    return redirect('cart')
 
 class CustomLoginView(LoginView):
     template_name = 'core/login.html'  

@@ -1,7 +1,7 @@
 {% extends 'base_crud_dynamic.html' %}
 
 {% block title %}Lista de {{ model_name }}{% endblock %}
-
+{% load static %}
 {% block content %}
 <div class="container mt-4">
     <h1>Lista de {{ model_name }}</h1>
@@ -27,6 +27,8 @@
                 {% if model_name == 'Producto' %}
                 <th scope="col">Etiquetas</th>
                 <th scope="col">Categoría</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Añadir al Carrito</th>
                 {% endif %}
                 {% if model_name == 'Kit' %}
                 <th scope="col">Productos</th>
@@ -39,10 +41,28 @@
             {% for instance in object_list %}
             <tr>
                 <td>{{ instance.pk }}</td>
-                <td><a href="{% url model_name|lower|add:'_detail' instance.pk %}">{{ instance }}</a></td>
+                <td>
+                    {{ instance }}
+                    {% if model_name == 'Producto' and instance.stock < 5 %}
+                    <img src="{% static 'images/campana.png' %}" alt="Campana de alerta" title="Stock crítico: {{ instance.stock }}" class="campana">
+                    {% endif %}
+                </td>
                 {% if model_name == 'Producto' %}
                 <td>{{ instance.etiquetas }}</td>
                 <td>{{ instance.categoria }}</td>
+                <td>{{ instance.stock }}</td>
+                <td>
+                    {% if instance.stock > 0 %}
+                    <form action="{% url 'add_to_cart' instance.pk %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Añadir al Carrito</button>
+                    </form>
+                    {% else %}
+                    
+                    <button class="btn btn-danger btn-sm disabled">Producto sin stock</button>
+
+                    {% endif %}
+                </td>
                 {% endif %}
                 {% if model_name == 'Kit' %}
                 <td>

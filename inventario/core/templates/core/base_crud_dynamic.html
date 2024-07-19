@@ -39,7 +39,8 @@
                     <li><a href="{% url 'ubicacion_list' %}" class="{% if request.path == '/core/ubicacion/' %}active{% endif %}">Ubicaciones</a></li>
                     <li><a href="{% url 'producto_list' %}" class="{% if request.path == '/core/producto/' %}active{% endif %}">Productos</a></li>
                     <li><a href="{% url 'kit_list' %}" class="{% if request.path == '/core/kit/' %}active{% endif %}">Kits</a></li>
-                    
+                    <li><a href="{% url 'cart' %}">Carrito</a></li>
+
                     
                     <div class="bienvenida">
                         <li>Bienvenido, {{ user.username }}</li>

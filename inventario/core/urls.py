@@ -2,9 +2,10 @@
 
 from django.urls import path, reverse_lazy
 from django.contrib.auth.decorators import login_required
-from .views import CustomLoginView, CustomLogoutView, TipoProdViews, TipoPagoViews, ProveedorViews, UbicacionViews, ProductoViews, KitViews
+from .views import CartView, remove_from_cart, clear_cart, add_to_cart, buy_products, CustomLoginView, CustomLogoutView, TipoProdViews, TipoPagoViews, ProveedorViews, UbicacionViews, ProductoViews, KitViews
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LogoutView
+from . import views
 urlpatterns = [
     path('', RedirectView.as_view(url=reverse_lazy('login')), name='index'),
     path('login/', CustomLoginView.as_view(), name='login'),
@@ -46,5 +47,10 @@ urlpatterns = [
     path('kit/new/', login_required(KitViews['KitCreateView'].as_view()), name='kit_create'),
     path('kit/<int:pk>/edit/', login_required(KitViews['KitUpdateView'].as_view()), name='kit_update'),
     path('kit/<int:pk>/delete/', login_required(KitViews['KitDeleteView'].as_view()), name='kit_delete'),
-
+    
+    path('carrito/', CartView.as_view(), name='cart'),
+    path('add_to_cart/<int:pk>/', add_to_cart, name='add_to_cart'),
+    path('comprar/', buy_products, name='buy_products'),
+    path('remove_from_cart/<int:index>/', remove_from_cart, name='remove_from_cart'),
+    path('clear_cart/', clear_cart, name='clear_cart'),
 ]
