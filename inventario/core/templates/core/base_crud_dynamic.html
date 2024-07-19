@@ -7,20 +7,33 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script>
+        document.documentElement.dataset.theme = localStorage.getItem('dark-mode') === 'enabled' ? 'dark' : 'light';
+    </script>
+    <style>
+        .dark-mode-toggler .toggle-icon.sun {
+            background-image: url('{% static "images/sun.png" %}');
+        }
 
+        .dark-mode-toggler .toggle-icon.moon {
+            background-image: url('{% static "images/moon.png" %}');
+        }
+        
+    </style>
 </head>
 
 <body>
     <div class="messages">
         {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
         {% endif %}
     </div>
 
@@ -33,48 +46,69 @@
                             <img src="{% static 'images/logo1.png' %}" alt="Logo de la empresa">
                         </div>
                     </li>
-                    <li><a href="{% url 'tipoprod_list' %}" class="{% if request.path == '/core/tipoprod/' %}active{% endif %}">Tipos de Producto</a></li>
-                    <li><a href="{% url 'tipopago_list' %}" class="{% if request.path == '/core/tipopago/' %}active{% endif %}">Tipos de Pago</a></li>
-                    <li><a href="{% url 'proveedor_list' %}" class="{% if request.path == '/core/proveedor/' %}active{% endif %}">Proveedores</a></li>
-                    <li><a href="{% url 'ubicacion_list' %}" class="{% if request.path == '/core/ubicacion/' %}active{% endif %}">Ubicaciones</a></li>
-                    <li><a href="{% url 'producto_list' %}" class="{% if request.path == '/core/producto/' %}active{% endif %}">Productos</a></li>
-                    <li><a href="{% url 'kit_list' %}" class="{% if request.path == '/core/kit/' %}active{% endif %}">Kits</a></li>
-                    <li><a href="{% url 'cart' %}" class="{% if request.path == '/core/carrito/' %}active{% endif %}">Carrito</a></li>
-                    <li><a href="{% url 'historico_compra_list' %}" class="{% if request.path == '/core/historico_compras/' %}active{% endif %}">Historico</a></li>
-                    
+                    <li><a href="{% url 'tipoprod_list' %}"
+                            class="{% if request.path == '/core/tipoprod/' %}active{% endif %}">Tipos de Producto</a>
+                    </li>
+                    <li><a href="{% url 'tipopago_list' %}"
+                            class="{% if request.path == '/core/tipopago/' %}active{% endif %}">Tipos de Pago</a></li>
+                    <li><a href="{% url 'proveedor_list' %}"
+                            class="{% if request.path == '/core/proveedor/' %}active{% endif %}">Proveedores</a></li>
+                    <li><a href="{% url 'ubicacion_list' %}"
+                            class="{% if request.path == '/core/ubicacion/' %}active{% endif %}">Ubicaciones</a></li>
+                    <li><a href="{% url 'producto_list' %}"
+                            class="{% if request.path == '/core/producto/' %}active{% endif %}">Productos</a></li>
+                    <li><a href="{% url 'kit_list' %}"
+                            class="{% if request.path == '/core/kit/' %}active{% endif %}">Kits</a></li>
+                    <li><a href="{% url 'cart' %}"
+                            class="{% if request.path == '/core/carrito/' %}active{% endif %}">Carrito</a></li>
+                    <li><a href="{% url 'historico_compra_list' %}"
+                            class="{% if request.path == '/core/historico_compras/' %}active{% endif %}">Historico</a>
+                    </li>
 
-                    
+
+
                     <div class="bienvenida">
                         <li>Bienvenido, {{ user.username }}</li>
                         <form id="logout-form" action="{% url 'logout' %}" method="post">
                             {% csrf_token %}
                             <a href="#"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar
-                               sesión</a>
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar
+                                sesión</a>
                         </form>
                     </div>
                 </ul>
+                <a id="toggle-dark-mode" class="dark-mode-toggler">
+                    <span class="toggle-icon"></span>
+                </a>
             </div>
             <div class="content col-sm-8 col-md-9 col-lg-7" id="producto">
                 <main>
                     {% block content %}
+                    <script>
+                        document.documentElement.dataset.theme = localStorage.getItem('dark-mode') === 'enabled' ? 'dark' : 'light';
+                    </script>
+                    <style>html body.dark-mode{background-color: black;}
+                        </style>
                     {% endblock %}
                 </main>
             </div>
         </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function(){
-            setTimeout(function(){
-                $('.alert').fadeOut('slow', function(){
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.alert').fadeOut('slow', function () {
                     $(this).remove();
                 });
             }, 3000);
         });
     </script>
+    <script src="{% static 'js/scripts.js' %}"></script>
 </body>
+
 </html>

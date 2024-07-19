@@ -3,6 +3,7 @@
 {% block title %}Lista de {{ model_name }}{% endblock %}
 {% load static %}
 {% block content %}
+
 <div class="container mt-4">
     <h1>Lista de {{ model_name }}</h1>
 
@@ -20,7 +21,7 @@
     <!-- Mostrar tabla solo si hay elementos -->
     {% if object_list %}
     <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
+        <thead>
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Nombre</th>

@@ -1,54 +1,54 @@
 {% extends 'base_crud_dynamic.html' %}
 {% load custom_filters %}
-
+{% load static %}
 {% block content %}
 <h1>Carrito de Compras</h1>
 
 {% if cart %}
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>Nombre del Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Total</th>
-            <th>Acción</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in cart %}
-        <tr>
-            <td>{{ item.name }}</td>
-            <td>${{ item.price }}</td>
-            <td>
-                <input type="number" name="quantity_{{ forloop.counter0 }}" value="{{ item.quantity }}" min="1" max="{{ item.stock }}">
-            </td>
-            <td>${{ item.price|multiply:item.quantity }}</td>
-            <td>
-                <form method="post" action="{% url 'remove_from_cart' forloop.counter0 %}" class="d-inline">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3">Total</td>
-            <td>${{ total}}</td>
-            <td><form method="POST" action="{% url 'buy_products' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-success">Comprar</button>
-                <a href="{% url 'clear_cart' %}" class="btn btn-warning">Limpiar Carrito</a>
-            </form>
-            </td>
-        </tr>
-    </tfoot>
-</table>
+<form method="post" action="{% url 'buy_products' %}" id="cart-form">
+    {% csrf_token %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre del Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody id="cart-items">
+            {% for item in cart %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td class="price">${{ item.price }}</td>
+                <td>
+                    <input type="number" name="quantity_{{ forloop.counter0 }}" value="{{ item.quantity }}" min="1" max="{{ item.stock }}" class="quantity-input">
+                </td>
+                <td class="total">${{ item.price|multiply:item.quantity }}</td>
+                <td>
+                    <form method="post" action="{% url 'remove_from_cart' forloop.counter0 %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total</td>
+                <td id="cart-total">${{ total }}</td>
+                <td>
+                    <button type="submit" class="btn btn-success">Comprar</button>
+                    <a href="{% url 'clear_cart' %}" class="btn btn-warning">Limpiar Carrito</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>
 
-
-
+<script src="{% static 'js/carro.js' %}"></script>
 
 {% else %}
 <p>No hay productos en el carrito.</p>

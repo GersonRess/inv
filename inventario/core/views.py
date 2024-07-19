@@ -7,6 +7,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
 from django.shortcuts import render, redirect,  get_object_or_404, HttpResponseRedirect
 from django.views import View
+from django.core.paginator import Paginator
 cart = []
 
 from django.shortcuts import render
@@ -80,6 +81,7 @@ def buy_products(request):
         
         total_compra = 0
         detalles = []
+        errors = []
 
         for index, item in enumerate(cart):
             product_id = item.get('id')
@@ -89,16 +91,16 @@ def buy_products(request):
 
             product = get_object_or_404(Producto, pk=product_id)
             quantity = quantities.get(f'quantity_{index}', item['quantity'])
-            
+
             if product.stock >= quantity:
+                # Actualiza el stock del producto
                 product.stock -= quantity
                 product.save()
-                item['quantity'] = quantity
-                
+
                 # Calcular totales
                 total_producto = item['price'] * quantity
                 total_compra += total_producto
-                
+
                 # Crear detalle de compra
                 detalles.append({
                     'producto_id': product_id,
@@ -108,8 +110,13 @@ def buy_products(request):
                     'total_producto': total_producto
                 })
             else:
-                messages.error(request, f"No hay suficiente stock para {product.nombreProducto}.")
-        
+                errors.append(f"No hay suficiente stock para {product.nombreProducto}.")
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return redirect('cart')
+
         if detalles:
             # Crear entrada en HistoricoCompra
             compra = HistoricoCompra.objects.create(total_compra=total_compra)
@@ -125,11 +132,13 @@ def buy_products(request):
                     total_producto=detalle['total_producto']
                 )
         
+        # Vaciar el carrito después de la compra
         cart.clear()
         request.session['cart'] = cart
         messages.success(request, "Compra realizada con éxito.")
         
     return redirect('cart')
+
 class CustomLoginView(LoginView):
     template_name = 'core/login.html'  
     success_url = reverse_lazy('tipoprod_list')  # Redirige aquí después del login
@@ -259,8 +268,14 @@ class HistoricoCompraListView(ListView):
     model = HistoricoCompra
     template_name = 'core/historico_compra_list.html'
     context_object_name = 'compras'
-    paginate_by = 10  # Opcional: número de compras por página
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset
+
+    def get_paginate_by(self, queryset):
+        per_page = self.request.GET.get('per_page', 10) 
+        return int(per_page)
 class DetalleCompraDetailView(DetailView):
     model = HistoricoCompra
     template_name = 'core/detalle_compra_detail.html'

@@ -1,88 +1,14 @@
-/* The side navigation menu */
-/*.sidebar {
-    margin: 0 10px 0 0;
-    padding: 5px;
-    width: 200px;
-    background-color: #000000e7;
-    position: fixed;
-    height: 100%;
-    overflow: auto;
-    color: white;
-    border-radius: 0 10px 10px 0;
-}
-
-/* Sidebar links 
-.sidebar a {
-    display: block;
-    color: black;
-    padding: 16px;
-    text-decoration: none;
-    color: white;
-}
-
-/* Active/current link 
-.sidebar a.active {
-    background-color: #04AA6D;
-    color: white;
-}
-
-/* Links on mouse-over 
-.sidebar a:hover:not(.active) {
-    background-color: #555;
-    color: white;
-}
-
-/* Page content. The value of the margin-left property should match the value of the sidebar's width property 
-div.content {
-    margin-left: 230px;
-    
-    padding: 1px 16px;
-    height: 1000px;
-}
-main{
-    margin-top: 50px;
-}
-/* On screens that are less than 700px wide, make the sidebar into a topbar */
-/*@media screen and (max-width: 700px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-
-    .sidebar a {
-        float: left;
-    }
-
-    div.content {
-        margin-left: 0;
-    }
-}
-
-/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
-/*@media screen and (max-width: 400px) {
-    .sidebar a {
-        text-align: center;
-        float: none;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .sidebar a {
-        text-align: center;
-        float: none;
-    }
-}
-@media screen and (max-width: 400px) {
-    .sidebar a {
-        text-align: center;
-        float: none;
-    }
-}
-
-*/
 
 /*Creador producto*/
+body.dark-mode {
+    background-color: #121212; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+    transition: background-color 0.5s, color 0.5s;
+}
+body.light-mode{
+    background-color: rgb(255, 255, 255);
+    transition: background-color 1s, color 0.5s;
+}
 #producto{
     border-radius: 10px;
     border: 1px solid rgb(155, 155, 155); 
@@ -122,7 +48,10 @@ main{
     left: 40px;
     width: 100%;
 }
-
+thead {
+    background-color: #5c5c5c; 
+    color: white;
+}
 .logo-container {
     color: white;
     font-size: larger;
@@ -134,7 +63,9 @@ main{
     height: auto; 
     max-width: 100%; 
 }
-
+a img{
+    width: 200px;
+}
 .messages {
     position: fixed;
     top: 20%;
@@ -161,3 +92,130 @@ main{
 .campana:hover {
     opacity: 0.7;
 }
+/* Estilos del modo oscuro */
+
+body.dark-mode div.container-fluid {
+    background-color: #121212; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+    transition: background-color 0.5s, color 0.5s;
+}
+body.dark-mode div table {
+    color: #e0e0e0; /* Texto claro */
+}
+body.dark-mode thead {
+    background-color: #252525;
+}
+body.dark-mode #producto {
+    border: 1px solid #333; /* Borde oscuro */
+    box-shadow: 10px 5px 8px rgba(0, 0, 0, 0.7); /* Sombra oscura */
+}
+
+body.dark-mode #producto > main > form {
+    background-color: rgba(100, 100, 100, 0.5); /* Fondo de formulario oscuro */
+}
+
+body.dark-mode #aside {
+    background-color: #1c1c1c; /* Fondo del aside oscuro */
+}
+
+body.dark-mode #aside li a {
+    color: #e0e0e0; /* Texto claro en el aside */
+}
+
+body.dark-mode #aside .bienvenida {
+    color: #e0e0e0; /* Texto claro en bienvenida */
+}
+
+body.dark-mode .logo-container {
+    color: #e0e0e0; /* Color del logo claro */
+}
+
+body.dark-mode .messages .alert {
+    background-color: #333; /* Fondo de las alertas oscuro */
+    color: #e0e0e0; /* Texto claro en alertas */
+}
+
+body.dark-mode .alert {
+    background-color: #333; /* Fondo de las alertas oscuro */
+    color: #e0e0e0; /* Texto claro en alertas */
+}
+
+body.dark-mode #aside ul li a.active {
+    color: #87ceeb; /* Color de los enlaces activos en modo oscuro */
+}
+body.dark-mode button.btn {
+    background-color: rgba(0, 0, 0, 0.829);
+}
+body.dark-mode button.btn-primary {
+    background-color: rgba(0, 0, 0, 0.829);
+}
+body.dark-mode form select {
+    color: white ;
+    background-color: rgba(0, 0, 0, 0.829);
+}
+body.dark-mode form textarea {
+    color: white ;
+    background-color: rgba(0, 0, 0, 0.829);
+}
+body.dark-mode button,
+body.dark-mode button.btn-primary,
+body.dark-mode button.btn-secondary,
+body.dark-mode button.btn-success,
+body.dark-mode button.btn-danger,
+body.dark-mode button.btn-warning,
+body.dark-mode button.btn-info,
+body.dark-mode button.btn-light,
+body.dark-mode button.btn-dark,
+body.dark-mode a.btn-primary,
+body.dark-mode a.btn-secondary,
+body.dark-mode a.btn-success,
+body.dark-mode a.btn-danger,
+body.dark-mode a.btn-warning,
+body.dark-mode a.btn-info,
+body.dark-mode a.btn-light,
+body.dark-mode a.btn-dark,
+body.dark-mode form select,
+body.dark-mode form textarea,
+body.dark-mode input {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.829);
+}
+.dark-mode-toggler {
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 25px;
+    position: fixed; 
+    bottom: 20px;
+    right: 20px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1000; 
+}
+
+.dark-mode-toggler .toggle-icon {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    right: 25px;
+    transition: transform 0.3s ease;
+    background-size: cover;
+    background-position: center;
+}
+
+
+body.dark-mode .dark-mode-toggler {
+    background-color: #333;
+}
+
+body.dark-mode .dark-mode-toggler .toggle-icon {
+    transform: translateX(25px);
+}
+body.light-mode span a{color: rgb(4, 0, 255); }
+body.dark-mode span a{color: rgb(91, 88, 255); }
+body.dark-mode select:focus{background-color: black; color: white;}
