@@ -1,5 +1,4 @@
-# core/views.py
-
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q, CharField
@@ -13,6 +12,22 @@ class CustomLoginView(LoginView):
 
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('login')  # Redirige aquí después del logout
+
+# Clase base para CreateView con mensajes de éxito
+class CreateViewWithMessage(SuccessMessageMixin, CreateView):
+    success_message = "Creado con éxito"
+
+# Clase base para UpdateView con mensajes de éxito
+class UpdateViewWithMessage(SuccessMessageMixin, UpdateView):
+    success_message = "Actualizado con éxito"
+
+# Clase base para DeleteView con mensajes de éxito
+class DeleteViewWithMessage(SuccessMessageMixin, DeleteView):
+    success_message = "Eliminado con éxito"
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)
 
 # Función para generar vistas para un modelo dado
 def generate_views(model, fields=None):
@@ -72,7 +87,7 @@ def generate_views(model, fields=None):
     # Create View
     views[f'{class_name}CreateView'] = type(
         f'{class_name}CreateView',
-        (CreateView,),
+        (CreateViewWithMessage,),
         {
             'model': model,
             'fields': fields,
@@ -88,7 +103,7 @@ def generate_views(model, fields=None):
     # Update View
     views[f'{class_name}UpdateView'] = type(
         f'{class_name}UpdateView',
-        (UpdateView,),
+        (UpdateViewWithMessage,),
         {
             'model': model,
             'fields': fields,
@@ -104,7 +119,7 @@ def generate_views(model, fields=None):
     # Delete View
     views[f'{class_name}DeleteView'] = type(
         f'{class_name}DeleteView',
-        (DeleteView,),
+        (DeleteViewWithMessage,),
         {
             'model': model,
             'template_name': 'core/delete_confirmation.html',

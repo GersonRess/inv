@@ -97,7 +97,7 @@ main{
 }
 
 #aside{
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.959);
     border-radius: 0 10px 10px 0;
     height: 100vh;
     margin: 0 20px 0 0;
@@ -119,17 +119,36 @@ main{
     padding: 10px;
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 40px;
     width: 100%;
 }
 
 .logo-container {
-    position: absolute;
-    top: 10px; 
-    right: 10px; 
+    color: white;
+    font-size: larger;
+    margin-top: 3px; 
+    margin-left: -20px; 
 }
 .logo-container img {
-    width: 150px; 
+    width: 250px; 
     height: auto; 
     max-width: 100%; 
+}
+
+.messages {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+    width: 80%;
+    max-width: 600px;
+}
+.alert {
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
+#aside ul li a.active {
+    color: #cae4ff; 
+    font-weight: bold; 
 }
